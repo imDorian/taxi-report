@@ -1,0 +1,39 @@
+#calculator-container {
+    /* background-color: aliceblu; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+    }
+    #date-input, #currencies {
+        /* width: 50%; */
+        height: 25px;
+    }
+    #form-container {
+        /* width: 100%; */
+        fieldset {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        label {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+        input {
+            height: 25px;
+            border: none;
+        }
+    }
+}
