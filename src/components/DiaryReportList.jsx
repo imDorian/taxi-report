@@ -14,7 +14,7 @@ const DiaryReportList = () => {
   //   }
   const localDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
   return (
-    <div>
+    <div className='diary-report--container'>
       <h2>Reporte Diário</h2>
       {/* <button onClick={deleteAllReport}>delete all</button> */}
       <ul>

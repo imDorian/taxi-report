@@ -4,6 +4,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-bottom: 70px;
     div {
         display: flex;
         flex-direction: row;
@@ -11,10 +12,13 @@
         justify-content: center;
         width: 100%;
         gap: 10px;
+        padding-block: 5px;
     }
     #date-input, #currencies {
         /* width: 50%; */
-        height: 25px;
+        /* height: 25px;
+        background-color: aliceblue; */
+        /* border: none; */
     }
     #form-container {
         /* width: 100%; */
@@ -23,6 +27,8 @@
             flex-direction: row;
             align-items: center;
             justify-content: center;
+            gap: 0px;
+            margin: 0;
         }
         label {
             display: flex;
@@ -32,8 +38,11 @@
             gap: 5px;
         }
         input {
-            height: 25px;
-            border: none;
+            /* height: 25px; */
+            /* border: none; */
+        }
+        input [type='radio'] {
+            background-color: aqua;
         }
     }
 }

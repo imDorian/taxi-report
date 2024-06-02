@@ -2,11 +2,11 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
 import React from 'react'
-import { isThisWeek } from '../functions/timeController'
-import '../css/Week.css'
+import { isThisMonth, isThisWeek, isToday } from '../functions/timeController'
+import '../css/Time.css'
 
-const Week = ({ data }) => {
-  const dataFiltered = data && data.filter(f => isThisWeek(f.date))
+const Time = ({ data, week, month, today }) => {
+  const dataFiltered = data && data.filter(f => week ? isThisWeek(f.date) : month ? isThisMonth(f.date) : isToday(f.date))
   const taxi = dataFiltered && dataFiltered.filter(f => f.counter ?? f.counter)
     .reduce((total, data) => total + Number(data.counter) - Number(data.errors), 0).toFixed(2)
   const apps = dataFiltered && dataFiltered.filter(f => f.uber ?? f.bolt ?? f.cabify ?? f.freenow)
@@ -20,18 +20,18 @@ const Week = ({ data }) => {
 
   return (
     <>
-      <h2>Esta semana</h2>
-      <div id='week-container'>
+      <h2>{week ? 'Esta semana ' + billing + '€' : month ? 'Este Mes ' + billing + '€' : 'Hoy ' + billing + '€'}</h2>
+      <div id='time-container'>
         <ul>
-          <li>Taxi: {taxi} </li>
-          <li>Apps: {apps}</li>
-          <li>Emisora: {emisora}</li>
-          <li>Combustible: {fuel}</li>
-          <li>Facturación: {billing}</li>
+          <li>Taxi<span>{taxi}</span></li>
+          <li>Apps<span>{apps}</span></li>
+          <li>Emisora<span>{emisora}</span></li>
+          <li>Combustible<span>{fuel}</span></li>
+          {/* <li>Facturación: </li> */}
         </ul>
       </div>
     </>
   )
 }
 
-export default Week
+export default Time

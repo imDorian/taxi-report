@@ -93,7 +93,7 @@ const Calculator = () => {
         </select>
       </div>
       <form id='form-container' onSubmit={saveData} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <fieldset style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '5px' }}>
+        <fieldset style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '15px' }}>
           <legend>Taxímetro</legend>
           <label>Contador * <input name='counter' value={formData.counter} onChange={handleChange} required type='number' placeholder='120,95 €' /></label>
           <label>Tarjeta * <input required name='card' value={formData.card} onChange={handleChange} type='number' placeholder='98,50 €' /></label>
