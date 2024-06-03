@@ -20,7 +20,7 @@ const DiaryReportList = () => {
       {/* <button onClick={deleteAllReport}>delete all</button> */}
       <ul>
         {!data || data.length === 0 ? 'Ningún reporte, añade tus ingresos desde el apartado home' : ''}
-        {data && data.map(d => {
+        {data && data.reverse().map(d => {
           const fuel = Number(d.gasoline ?? d.diesel ?? d.gas ?? d.electricity).toFixed(2)
           const returnFuel = d.returnFuel === 'full' ? fuel : d.returnFuel === '1.50' ? fuel * 0.5 : d.returnFuel === '0' ? fuel * 0 : (fuel - fuel / d.returnFuel).toFixed(2)
           const total = (Number(d.uber) + Number(d.bolt) + Number(d.freenow) + Number(d.cabify) + Number(d.counter)).toFixed(2)

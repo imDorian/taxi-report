@@ -1,31 +1,44 @@
 div {
-    width: 100vw;
+    /* width: 100vw; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     /* padding-bottom: 50px; */
     ul {
         padding: 0;
         margin: 0;
         /* background-color: grey; */
         list-style: none;
-        width: 100%;
+        width: 95%;
         /* height: 100px; */
         display: flex;
+        /* position: relative; */
+        align-items: center;
+        justify-content: center;
         flex-direction: column;
+        /* padding: 20px; */
+        padding-bottom: 70px;
         gap: 10px;
         li {
-            width: 100%;
-            background-color: grey;
+            width: 100% ;
+            /* background-color: grey; */
+            /* max-width: 600px; */
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
+            align-items: stretch;
             padding-block: 5px;
+            /* padding-inline: 20px; */
             border-radius: 12px;
             font-size: 16px;
-            gap: 5px;
+            gap: 10px;
             .date-container {
                 display: flex;
                 justify-content: center;
+                width: 100%;
                 align-items: center;
+                padding-bottom: 5px;
                 border-bottom: 1px solid rgba(0, 0, 0, 0.419);
                 position: relative;
                 .delete-button {
@@ -33,7 +46,7 @@ div {
                     padding-inline: 5px;
                     position: absolute;
                     right: 5px;
-                    top: -2px;
+                    top: -4px;
                 }
             }
             .total-diary--container {

@@ -6,10 +6,10 @@ const Report = () => {
   const localStorageData = JSON.parse(window.localStorage.getItem('localData'))
 
   return (
-    <div>
+    <>
       <DiaryReportList data={localStorageData} />
       <Nav />
-    </div>
+    </>
   )
 }
 

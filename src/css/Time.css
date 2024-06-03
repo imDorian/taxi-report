@@ -2,7 +2,7 @@
     ul {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        width: 100%;
+        width: 90%;
         li {
             text-align: center;
             width: 100%;
