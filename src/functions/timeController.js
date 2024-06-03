@@ -23,8 +23,10 @@ export const isThisWeek = (d) => {
 
   return dataDate >= firstDayOfWeek && dataDate <= lastDayOfWeek
 }
-export const isThisMonth = (d) => {
+export const isThisMonth = (d, prevDate) => {
   const fechaActual = new Date()
+  fechaActual.setMonth(prevDate)
+  console.log(fechaActual)
   const date = new Date(d)
   return (
     date.getMonth() === fechaActual.getMonth() &&

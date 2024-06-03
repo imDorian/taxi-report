@@ -3,7 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light ;
+  color-scheme: light dark;
   color: rgba(33, 53, 71, 0.87);
   background-color: #f0f2f5;
 
@@ -26,15 +26,17 @@ body {
   margin: 0;
   display: flex;
   width: 100vw;
+  max-width: 600px;
   /* min-width: 320px;
   min-height: 100vh; */
   font-family: 'Inter', 'Roboto', sans-serif;
-  background-color: #f0f2f5;
-  color: #213547;
+  /* background-color: #f0f2f5; */
+  /* color: #213547; */
   /* padding: 20px; */
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 h1 {
@@ -80,15 +82,32 @@ input, select {
 }
 
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: #dddddd;
+    background-color: #213547;
   }
   a:hover {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: green;
+  }
+  input, select {
+    border: 1px solid rgb(185, 185, 185);
+    color: #dddddd;
+    background-color: #213547;
+  }
+  nav {
+    background-color: #1e2a34;
+    color: #dddddd;
+  }
+  nav a svg {
+    fill: white;
+  }
+  .active {
+    svg {
+      fill: green;
+    }
   }
 }

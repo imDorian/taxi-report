@@ -27,3 +27,9 @@ nav a:hover {
 nav a svg {
     fill: green;
 }
+
+.active {
+    svg {
+        fill: greenyellow
+    }
+}

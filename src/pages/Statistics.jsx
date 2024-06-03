@@ -4,6 +4,7 @@ import Time from '../components/Time'
 
 const Statistics = () => {
   const data = JSON.parse(window.localStorage.getItem('localData'))
+  console.log()
   return (
     <>
       <h1>Estadísticas</h1>

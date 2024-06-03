@@ -4,7 +4,7 @@ import Nav from '../components/Nav'
 const Home = () => {
   return (
     <>
-      <h1>Taxi Report</h1>
+      <h1>Calculadora</h1>
       <Calculator />
       <Nav />
     </>

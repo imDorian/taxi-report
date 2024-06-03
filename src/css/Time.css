@@ -11,3 +11,15 @@
         
     }
 }
+.change-date--btn {
+    font-size: 12px;
+    /* background-color: aliceblue; */
+}
+h2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+    width: 100%;
+    font-size: 16px;
+}

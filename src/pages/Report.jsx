@@ -7,6 +7,7 @@ const Report = () => {
 
   return (
     <>
+      <h1>Reporte</h1>
       <DiaryReportList data={localStorageData} />
       <Nav />
     </>

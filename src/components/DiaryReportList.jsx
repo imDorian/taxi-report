@@ -16,7 +16,6 @@ const DiaryReportList = () => {
   console.log(data)
   return (
     <div className='diary-report--container'>
-      <h2>Reporte Diário</h2>
       {/* <button onClick={deleteAllReport}>delete all</button> */}
       <ul>
         {!data || data.length === 0 ? 'Ningún reporte, añade tus ingresos desde el apartado home' : ''}
