@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { currencies } from '../utils/currencies'
 import '../css/Calculator.css'
+
 const Calculator = () => {
   const [formData, setFormData] = useState({
     date: '',
@@ -11,9 +12,22 @@ const Calculator = () => {
     nErrors: '',
     errors: '',
     uber: '',
-    freenow: '',
+    uberCash: '',
+    uberPromotions: '',
+    uberTips: '',
+    freenowOutOfApp: '',
+    freenowOnApp: '',
+    freenowTaximeter: '',
+    freenowCash: '',
+    freenowCard: '',
     cabify: '',
+    cabifyCash: '',
+    cabifyTips: '',
+    cabifyPromotions: '',
     bolt: '',
+    boltCash: '',
+    boltTips: '',
+    boltPromotions: '',
     amarilla: '',
     emisora: '',
     gasoline: '',
@@ -23,11 +37,16 @@ const Calculator = () => {
     returnFuel: '',
     id: crypto.randomUUID()
   })
+  const [isOpen, setIsOpen] = useState(false)
+  const FNdataphoneRef = useRef()
+  const FNcashRef = useRef()
+  const freenowTxRefInput = useRef()
+
   const localStorageData = JSON.parse(window.localStorage.getItem('localData'))
+
   const saveData = (e) => {
     e.preventDefault()
     console.log(formData)
-    // recoger los datos del form y guardarlos en localStorage
     if (!localStorageData) {
       const localData = [formData]
       window.localStorage.setItem('localData', JSON.stringify(localData))
@@ -43,9 +62,22 @@ const Calculator = () => {
       nErrors: '',
       errors: '',
       uber: '',
-      freenow: '',
+      uberCash: '',
+      uberPromotions: '',
+      uberTips: '',
+      freenowOutOfApp: '',
+      freenowOnApp: '',
+      freenowTaximeter: '',
+      freenowCash: '',
+      freenowCard: '',
       cabify: '',
+      cabifyCash: '',
+      cabifyTips: '',
+      cabifyPromotions: '',
       bolt: '',
+      boltCash: '',
+      boltTips: '',
+      boltPromotions: '',
       gasoline: '',
       diesel: '',
       gas: '',
@@ -53,6 +85,7 @@ const Calculator = () => {
       id: crypto.randomUUID()
     })
   }
+
   const handleChange = (e) => {
     const { name, value } = e.target
     console.log(name, value)
@@ -61,26 +94,102 @@ const Calculator = () => {
       [name]: value
     })
   }
-  const formatDate = (date) => {
-    const newDate = date ? new Date(date) : new Date()
+
+  const formatDate = () => {
+    const newDate = new Date()
     const year = newDate.getFullYear()
     let month = newDate.getMonth() + 1
-    month = month < 10 ? `0${month}` : month // Agrega un cero al mes si es necesario
+    month = month < 10 ? `0${month}` : month
     let day = newDate.getDate()
-    day = day < 10 ? `0${day}` : day // Agrega un cero al día si es necesario
+    day = day < 10 ? `0${day}` : day
 
     const formattedDate = `${year}-${month}-${day}`
-
-    // Establece la fecha actual en el estado
-    setFormData({
-      ...formData,
+    console.log(formattedDate)
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       date: formattedDate
-    })
-    return formattedDate
+    }))
   }
+
+  const autoCalculate = (total, card, cash) => {
+    if (card > 0 && total > 0) {
+      const newCash =
+        Number(total) - Number(card) <= 0 || card === ''
+          ? ''
+          : Number(total) - Number(card)
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [cash]: newCash
+      }))
+      console.log(newCash)
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [cash]: ''
+      }))
+    }
+  }
+
+  const freenowTaximeter = () => {
+    if (formData.freenowOutOfApp || formData.freenowOnApp) {
+      freenowTxRefInput.current.disabled = false
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        freenowTaximeter: ''
+      }))
+      freenowTxRefInput.current.disabled = true
+    }
+  }
+
+  const autoOpen = () => {
+    if (formData.freenowOutOfApp > 0) {
+      FNcashRef.current.disabled = false
+      FNdataphoneRef.current.disabled = false
+      setIsOpen(true)
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        freenowCard: '',
+        freenowCash: ''
+      }))
+    } else {
+      FNcashRef.current.disabled = true
+      FNdataphoneRef.current.disabled = true
+      setIsOpen(false)
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        freenowCard: '',
+        freenowCash: ''
+      }))
+    }
+  }
+
   useEffect(() => {
     formatDate()
   }, [])
+
+  useEffect(() => {
+    freenowTaximeter()
+  }, [formData.freenowOutOfApp, formData.freenowOnApp])
+
+  useEffect(() => {
+    if (formData.freenowCard !== '') {
+      autoCalculate(formData.freenowOutOfApp, formData.freenowCard, 'freenowCash')
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        freenowCash: ''
+      }))
+    }
+  }, [formData.freenowCard])
+
+  useEffect(() => {
+    autoOpen()
+  }, [formData.freenowOutOfApp])
+
+  useEffect(() => {
+    autoCalculate(formData.counter, formData.card, 'cash')
+  }, [formData.card])
 
   return (
     <div id='calculator-container'>
@@ -92,8 +201,8 @@ const Calculator = () => {
           )}
         </select>
       </div>
-      <form id='form-container' onSubmit={saveData} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-        <fieldset style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '15px' }}>
+      <form id='form-container' onSubmit={saveData}>
+        <fieldset>
           <legend>Taxímetro</legend>
           <label>Contador * <input name='counter' value={formData.counter} onChange={handleChange} required type='number' placeholder='120,95 €' /></label>
           <label>Tarjeta * <input required name='card' value={formData.card} onChange={handleChange} type='number' placeholder='98,50 €' /></label>
@@ -101,20 +210,54 @@ const Calculator = () => {
           <label>Nº de errores <input name='nErrors' value={formData.nErrors} onChange={handleChange} type='number' placeholder='2' /></label>
           <label>Errores <input name='errors' value={formData.errors} onChange={handleChange} type='number' placeholder='3,30 €' /></label>
         </fieldset>
-        <fieldset style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '5px' }}>
+        <fieldset>
           <legend>Apps</legend>
-          <label>Uber <input name='uber' value={formData.uber} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
-          <label>FreeNow <input name='freenow' value={formData.freenow} onChange={handleChange} type='number' placeholder='10 €' /></label>
-          <label>Cabify <input name='cabify' value={formData.cabify} onChange={handleChange} type='number' placeholder='0 €' /></label>
-          <label>Bolt <input name='bolt' value={formData.bolt} onChange={handleChange} type='number' placeholder='5,75 €' /></label>
+          {/* <label>Uber <input name='uber' value={formData.uber} onChange={handleChange} type='number' placeholder='49,25 €' /></label> */}
+          <details>
+            <summary>Uber</summary>
+            <label>Total<input name='uber' value={formData.uber} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Efectivo<input name='uberCash' value={formData.uberCash} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Propinas<input name='uberTips' value={formData.uberTips} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Promociones<input name='uberPromotions' value={formData.uberPromotions} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+          </details>
+          <details>
+            <summary>FreeNow</summary>
+            <details open={isOpen} className='details-on-details'>
+              <summary><span>Pagos fuera de app</span>
+                <input name='freenowOutOfApp' value={formData.freenowOutOfApp} onChange={handleChange} type='number' placeholder='49,25 €' />
+              </summary>
+              <div>
+                <label>Datáfono<input ref={FNdataphoneRef} name='freenowCard' value={formData.freenowCard} onChange={handleChange} type='number' placeholder='10 €' /></label>
+                <label>Efectivo<input ref={FNcashRef} name='freenowCash' value={formData.freenowCash} onChange={handleChange} type='number' placeholder='10 €' /></label>
+              </div>
+            </details>
+            <label><span>Saldo FreeNow</span><input name='freenowOnApp' value={formData.freenowOnApp} onChange={handleChange} type='number' placeholder='10 €' /></label>
+            <label><span>Taximetro</span><input ref={freenowTxRefInput} name='freenowTaximeter' value={formData.freenowTaximeter} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+          </details>
+          <details>
+            <summary>Cabify</summary>
+            <label>Total<input name='cabify' value={formData.cabify} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Efectivo<input name='cabifyCash' value={formData.cabifyCash} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Propinas<input name='cabifyTips' value={formData.cabifyTips} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Promociones<input name='cabifyPromotions' value={formData.cabifyPromotions} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+          </details>
+          <details>
+            <summary>Bolt</summary>
+            <label>Total<input name='bolt' value={formData.bolt} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Efectivo<input name='boltCash' value={formData.boltCash} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Propinas<input name='boltTips' value={formData.boltTips} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+            <label>Promociones<input name='boltPromotions' value={formData.boltPromotions} onChange={handleChange} type='number' placeholder='49,25 €' /></label>
+          </details>
+          {/* <label>Cabify <input name='cabify' value={formData.cabify} onChange={handleChange} type='number' placeholder='0 €' /></label> */}
+          {/* <label>Bolt <input name='bolt' value={formData.bolt} onChange={handleChange} type='number' placeholder='5,75 €' /></label> */}
         </fieldset>
-        <fieldset style={{ display: 'flex', flexDirection: 'column', alignItems: 'end', gap: '5px' }}>
+        <fieldset>
           <legend>Combustible</legend>
           <label>Gasolina <input name='gasoline' value={formData.gasoline} onChange={handleChange} type='number' placeholder='55,10 €' /></label>
           <label>Diesel <input name='diesel' value={formData.diesel} onChange={handleChange} type='number' placeholder='0 €' /></label>
           <label>Gas <input name='gas' value={formData.gas} onChange={handleChange} type='number' placeholder='0 €' /></label>
           <label>Electricidad <input name='electricity' value={formData.electricity} onChange={handleChange} type='number' placeholder='0 €' /></label>
-          <fieldset>
+          <fieldset className='returnFuel'>
             <legend>Devolución combustible</legend>
             <label><input name='returnFuel' value='0' onChange={handleChange} type='radio' /> 0%</label>
             <label><input name='returnFuel' value='1.21' onChange={handleChange} type='radio' /> 21%</label>

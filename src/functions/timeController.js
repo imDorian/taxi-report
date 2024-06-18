@@ -26,7 +26,6 @@ export const isThisWeek = (d) => {
 export const isThisMonth = (d, prevDate) => {
   const fechaActual = new Date()
   fechaActual.setMonth(prevDate)
-  console.log(fechaActual)
   const date = new Date(d)
   return (
     date.getMonth() === fechaActual.getMonth() &&

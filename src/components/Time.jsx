@@ -1,49 +1,66 @@
-/* eslint-disable no-undef */
-/* eslint-disable array-callback-return */
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
+/* eslint-disable no-return-assign */
+import React, { useState, useEffect } from 'react'
 import { isThisMonth, isThisWeek, isToday } from '../functions/timeController'
 import '../css/Time.css'
 
-const Time = ({ data, week, month, today, prevDate }) => {
+const Time = ({ data, week, month, today }) => {
   const [newDate, setNewDate] = useState(new Date())
-  // console.log(newDate.getMonth())
-  const dataFiltered = data && data.filter(f => week ? isThisWeek(f.date) : month ? isThisMonth(f.date, newDate.getMonth()) : isToday(f.date))
-  const taxi = dataFiltered && dataFiltered.filter(f => f.counter ?? f.counter)
-    .reduce((total, data) => total + Number(data.counter) - Number(data.errors), 0).toFixed(2)
-  const apps = dataFiltered && dataFiltered.filter(f => f.uber ?? f.bolt ?? f.cabify ?? f.freenow)
-    .reduce((total, data) => total + Number(data.uber) + Number(data.bolt) + Number(data.cabify) + Number(data.freenow), 0).toFixed(2)
-  const emisora = dataFiltered && dataFiltered.filter(f => f.emisora)
-    .reduce((total, data) => total + Number(data.emisora), 0).toFixed(2)
-  const fuel = dataFiltered && dataFiltered.filter(f => f.gasoline ?? f.diesel ?? f.gas ?? f.electricity)
-    .reduce((total, data) => total + Number(data.gasoline) + Number(data.diesel) + Number(data.gas) + Number(data.electricity), 0).toFixed(2)
-  const billing = dataFiltered && dataFiltered.filter(f => f.counter ?? f.uber ?? f.bolt ?? f.cabify ?? f.freenow ?? f.emisora)
-    .reduce((total, data) => total + Number(data.counter) - Number(data.errors) + Number(data.uber) + Number(data.bolt) + Number(data.cabify) + Number(data.freenow) + Number(data.emisora), 0).toFixed(2)
+  const [dataFiltered, setDataFiltered] = useState([])
+
+  useEffect(() => {
+    const filteredData = data && data.filter(f => {
+      if (week) return isThisWeek(f.date)
+      if (month) return isThisMonth(f.date, newDate.getMonth())
+      if (today) return isToday(f.date)
+      return false
+    })
+    setDataFiltered(filteredData || [])
+  }, [data, week, month, today, newDate])
+
+  const calculateSum = (key, subtract = [], add = []) => {
+    return dataFiltered
+      .reduce((total, item) => {
+        let value = Number(item[key] || 0)
+        subtract.forEach(subKey => value -= Number(item[subKey] || 0))
+        add.forEach(addKey => value += Number(item[addKey] || 0))
+        return total + value
+      }, 0)
+      .toFixed(2)
+  }
+
+  const taxi = calculateSum('counter', ['errors', 'freenowTaximeter'])
+  const apps = calculateSum('', [], ['uber', 'uberTips', 'uberPromotions', 'bolt', 'cabify', 'freenowOutOfApp', 'freenowOnApp'])
+  const emisora = calculateSum('emisora')
+  const fuel = calculateSum('', [], ['gasoline', 'diesel', 'gas', 'electricity'])
+  const billing = calculateSum('counter', ['errors', 'freenowTaximeter'], ['uber', 'uberTips', 'uberPromotions', 'freenowOutOfApp', 'freenowOnApp', 'bolt', 'cabify'])
+  const cash = calculateSum('', [], ['cash', 'uberCash', 'freenowCash', 'boltCash', 'cabifyCash'])
 
   const handleDate = (e) => {
     if (month) {
-      if (e === 'subtract') {
-        setNewDate(new Date(newDate.setMonth(newDate.getMonth() - 1)))
-      } else {
-        setNewDate(new Date(newDate.setMonth(newDate.getMonth() + 1)))
-      }
+      setNewDate(prevDate => {
+        const newDate = new Date(prevDate)
+        if (e === 'subtract') newDate.setMonth(newDate.getMonth() - 1)
+        else newDate.setMonth(newDate.getMonth() + 1)
+        return newDate
+      })
     }
   }
-  console.log(newDate)
+
   return (
     <>
       <h2>
         <button className='change-date--btn' onClick={() => handleDate('subtract')}>-</button>
-        {week ? 'Esta semana - ' + billing + '€' : month ? new Date(newDate).toLocaleDateString('es-Es', { month: 'long', year: 'numeric' }).toUpperCase() + ' - ' + billing + '€' : 'Hoy ' + billing + '€'}
+        {week ? `Esta semana - ${billing}€` : month ? `${new Date(newDate).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' }).toUpperCase()} - ${billing}€` : `Hoy ${billing}€`}
         <button className='change-date--btn' onClick={() => handleDate('add')}>+</button>
       </h2>
       <div id='time-container'>
         <ul>
           <li>Taxi<span>{taxi}</span></li>
+          <li>Efectivo<span>{cash}</span></li>
           <li>Apps<span>{apps}</span></li>
-          <li>Emisora<span>{emisora}</span></li>
+          {emisora > 0 && <li>Emisora<span>{emisora}</span></li>}
           <li>Combustible<span>{fuel}</span></li>
-          {/* <li>Facturación: </li> */}
         </ul>
       </div>
     </>

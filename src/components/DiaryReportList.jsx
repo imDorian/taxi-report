@@ -22,8 +22,8 @@ const DiaryReportList = () => {
         {data && data.sort((b, a) => new Date(a.date) - new Date(b.date)).map(d => {
           const fuel = Number(d.gasoline ?? d.diesel ?? d.gas ?? d.electricity).toFixed(2)
           const returnFuel = d.returnFuel === 'full' ? fuel : d.returnFuel === '1.50' ? fuel * 0.5 : d.returnFuel === '0' ? fuel * 0 : (fuel - fuel / d.returnFuel).toFixed(2)
-          const total = (Number(d.uber) + Number(d.bolt) + Number(d.freenow) + Number(d.cabify) + Number(d.counter)).toFixed(2)
-          const totalApps = (Number(d.uber) + Number(d.bolt) + Number(d.freenow) + Number(d.cabify)).toFixed(2)
+          const total = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify) + Number(d.counter)).toFixed(2)
+          const totalApps = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify)).toFixed(2)
           const returnFuelPorcent = d.returnFuel === 'full' ? '100' : d.returnFuel === '0' ? 0 : d.returnFuel.slice(2)
           const counter = Number(d.counter).toFixed(2)
           return (
@@ -32,7 +32,7 @@ const DiaryReportList = () => {
               <div className='total-diary--container'>
                 <div>Taxi <span>{counter}{d.currency}</span></div>
                 <div>Apps <span>{totalApps}{d.currency}</span></div>
-                <div>Emisoras <span>{d.currency}</span></div>
+                {/* <div>Emisoras <span>{d.currency}</span></div> */}
                 <div>Total<span>{total}{d.currency}</span></div>
               </div>
               {fuel > 0 &&

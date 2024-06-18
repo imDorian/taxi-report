@@ -24,18 +24,30 @@
         /* width: 100%; */
         fieldset {
             display: flex;
-            flex-direction: row;
-            align-items: center;
+            flex-direction: column;
+            align-items: end;
             justify-content: center;
-            gap: 0px;
+            gap: 5px;
             margin: 0;
         }
         label {
             display: flex;
             flex-direction: row;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            padding-block: 5px;
+            span {
+                width: 100px; /* Ajusta el ancho según tus necesidades */
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: end;
+            }
+         
+        }
+        .returnFuel {
+            flex-direction: row;
         }
         input {
             /* height: 25px; */
@@ -45,4 +57,51 @@
             background-color: aqua;
         }
     }
+}
+
+details {
+    display: flex;
+    justify-content: stretch;
+    align-items: start;
+    width: 100%;
+    /* gap: 10px; */
+    
+    /* gap: 20px; */
+    summary {
+        text-align: start;
+    }
+    .details-on-details {
+        /* width: 80%; */
+        justify-content: flex-end;
+        display: flex;
+        summary {
+            display: flex;
+            text-align: end;
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: 8px;
+            padding-block: 5px ;
+            span {
+                width: 100px; /* Ajusta el ancho según tus necesidades */
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: end;
+            }
+            /* gap: 10px; */
+        }
+        div {
+            label {
+                flex-direction: column !important;
+                input {
+                    width: 70px;
+                }
+            }
+        }
+    }
+}
+details[open] {
+    /* display: flex;
+    justify-content: end;
+    align-items: end; */
 }

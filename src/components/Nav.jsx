@@ -8,9 +8,9 @@ import Stats from '../icons/Stats'
 const Nav = () => {
   return (
     <nav>
-      <NavLink activeClassName='active' to='/'><Car size='25px' /></NavLink>
-      <NavLink activeClassName='active' to='/diaryreport'><List size='25px' /></NavLink>
-      <NavLink activeClassName='active' to='/statistics'><Stats size='25px' /></NavLink>
+      <NavLink activeclassname='active' to='/'><Car size='25px' /></NavLink>
+      <NavLink activeclassname='active' to='/diaryreport'><List size='25px' /></NavLink>
+      <NavLink activeclassname='active' to='/statistics'><Stats size='25px' /></NavLink>
     </nav>
   )
 }
