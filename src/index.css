@@ -65,6 +65,7 @@ button:focus-visible {
 }
 
 input, select {
+  font-size: 16px;
   border-radius: 6px;
   text-align: center;
   background-color:transparent;
