@@ -1,0 +1,24 @@
+.delete-modal {
+    position: absolute;
+    background-color:bisque;
+    border-radius: 6px;
+    top: 50%;
+    color: black;
+    padding: 5px ;
+    padding-block: 15px;
+    transform: translate(0, -50%);
+    button {
+        background-color: red;
+    }
+    #quit-modal-delete {
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        /* font-size: 12px; */
+        padding-block: 1px;
+        padding-inline: 5px;
+    }
+    #delete-btn {
+        margin-top: 10px;
+    }
+}

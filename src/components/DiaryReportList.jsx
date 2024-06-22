@@ -1,19 +1,23 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react'
 import '../css/DiaryReportList.css'
+import { useStore } from '../Stores/useStore'
 
 const DiaryReportList = () => {
-  const [data, setData] = useState(JSON.parse(window.localStorage.getItem('localData')))
-  const deleteReport = (e) => {
-    const newData = data.filter(f => f.id !== e.id)
-    window.localStorage.setItem('localData', JSON.stringify(newData))
-    setData(newData)
+  // const [data, setData] = useState(JSON.parse(window.localStorage.getItem('localData')))
+  const { isModalDelete, deleteDate, data } = useStore()
+  const openModalDelete = (e) => {
+    console.log(e.target)
+    useStore.setState({
+      isModalDelete: true,
+      deleteDate: e.date,
+      deleteId: e.id
+    })
   }
   //   const deleteAllReport = () => {
   //     window.localStorage.clear('localData')
   //   }
   const localDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
-  console.log(data)
   return (
     <div className='diary-report--container'>
       {/* <button onClick={deleteAllReport}>delete all</button> */}
@@ -28,7 +32,9 @@ const DiaryReportList = () => {
           const counter = Number(d.counter).toFixed(2)
           return (
             <li key={d.id}>
-              <div className='date-container'>{new Date(d.date).toLocaleDateString('Es-es', localDate)} <button onClick={() => deleteReport(d)} className='delete-button'>X</button></div>
+              <div className='date-container'>{new Date(d.date).toLocaleDateString('Es-es', localDate)}
+                <button onClick={() => openModalDelete(d)} className='delete-button'>X</button>
+              </div>
               <div className='total-diary--container'>
                 <div>Taxi <span>{counter}{d.currency}</span></div>
                 <div>Apps <span>{totalApps}{d.currency}</span></div>

@@ -1,3 +1,5 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable react/prop-types */
 import React, { useState, useEffect } from 'react'
 import { isThisMonth, isThisWeek, isToday } from '../functions/timeController'
 import '../css/Time.css'

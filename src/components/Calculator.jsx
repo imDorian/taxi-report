@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { currencies } from '../utils/currencies'
 import '../css/Calculator.css'
+import { useStore } from '../Stores/useStore'
 
 const Calculator = () => {
   const [formData, setFormData] = useState({
@@ -37,22 +38,37 @@ const Calculator = () => {
     returnFuel: '',
     id: crypto.randomUUID()
   })
+  const { data } = useStore()
   const [isOpen, setIsOpen] = useState(false)
   const FNdataphoneRef = useRef()
   const FNcashRef = useRef()
   const freenowTxRefInput = useRef()
 
-  const localStorageData = JSON.parse(window.localStorage.getItem('localData'))
+  // const localStorageData = JSON.parse(window.localStorage.getItem('localData'))
 
   const saveData = (e) => {
     e.preventDefault()
     console.log(formData)
-    if (!localStorageData) {
+    if (data) {
       const localData = [formData]
-      window.localStorage.setItem('localData', JSON.stringify(localData))
+      try {
+        window.localStorage.setItem('localData', JSON.stringify(localData))
+        useStore.setState({
+          data: localData
+        })
+      } catch (error) {
+        console.error(error)
+      }
     } else {
-      const newLocalData = [...localStorageData, formData]
-      window.localStorage.setItem('localData', JSON.stringify(newLocalData))
+      const newLocalData = [...data, formData]
+      try {
+        window.localStorage.setItem('localData', JSON.stringify(newLocalData))
+        useStore.setState({
+          data: newLocalData
+        })
+      } catch (error) {
+        console.error(error)
+      }
     }
     setFormData({
       ...formData,
