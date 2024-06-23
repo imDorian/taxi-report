@@ -49,7 +49,7 @@ const Calculator = () => {
   const saveData = (e) => {
     e.preventDefault()
     console.log(formData)
-    if (data) {
+    if (!data) {
       const localData = [formData]
       try {
         window.localStorage.setItem('localData', JSON.stringify(localData))
