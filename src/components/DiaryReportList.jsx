@@ -1,11 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react'
 import '../css/DiaryReportList.css'
 import { useStore } from '../Stores/useStore'
 
 const DiaryReportList = () => {
   // const [data, setData] = useState(JSON.parse(window.localStorage.getItem('localData')))
-  const { isModalDelete, deleteDate, data } = useStore()
+  const { data } = useStore()
   const openModalDelete = (e) => {
     console.log(e.target)
     useStore.setState({

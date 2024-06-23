@@ -111,8 +111,9 @@ const Calculator = () => {
     })
   }
 
-  const formatDate = () => {
-    const newDate = new Date()
+  const formatDate = (e) => {
+    console.log(e)
+    const newDate = !e ? new Date() : new Date(e)
     const year = newDate.getFullYear()
     let month = newDate.getMonth() + 1
     month = month < 10 ? `0${month}` : month
