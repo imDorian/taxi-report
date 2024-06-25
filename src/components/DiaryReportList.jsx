@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import '../css/DiaryReportList.css'
+import { formatDate } from '../functions/formatDate'
 import { useStore } from '../Stores/useStore'
 
 const DiaryReportList = () => {
   // const [data, setData] = useState(JSON.parse(window.localStorage.getItem('localData')))
-  const { data } = useStore()
+  const { data, isEdit } = useStore()
   const openModalDelete = (e) => {
     console.log(e.target)
     useStore.setState({
@@ -13,12 +14,30 @@ const DiaryReportList = () => {
       deleteId: e.id
     })
   }
+  const handleEdit = () => {
+    if (isEdit) {
+      useStore.setState({
+        isEdit: false
+      })
+    } else {
+      useStore.setState({
+        isEdit: true
+      })
+    }
+  }
+  const updateDate = (e) => {
+    console.log(e)
+    const newData = data.find(d => d.id === e.id)
+    console.log(newData)
+    const formDate = formatDate(e.date)
+  }
   //   const deleteAllReport = () => {
   //     window.localStorage.clear('localData')
   //   }
   const localDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }
   return (
     <div className='diary-report--container'>
+      {/* <button onClick={handleEdit}>{isEdit ? 'Aceptar' : 'Editar'}</button> */}
       {/* <button onClick={deleteAllReport}>delete all</button> */}
       <ul>
         {!data || data.length === 0 ? 'Ningún reporte, añade tus ingresos desde el apartado home' : ''}
@@ -31,7 +50,13 @@ const DiaryReportList = () => {
           const counter = Number(d.counter).toFixed(2)
           return (
             <li key={d.id}>
-              <div className='date-container'>{new Date(d.date).toLocaleDateString('Es-es', localDate)}
+              <div className='date-container'>
+                {
+                  isEdit
+                    ? <input type='date' value={formatDate(d.date)} onChange={() => updateDate(d)} />
+                    : <span> {new Date(d.date).toLocaleDateString('Es-es', localDate)}</span>
+
+                }
                 <button onClick={() => openModalDelete(d)} className='delete-button'>X</button>
               </div>
               <div className='total-diary--container'>

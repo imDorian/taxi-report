@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { currencies } from '../utils/currencies'
 import '../css/Calculator.css'
 import { useStore } from '../Stores/useStore'
+import { formatDate } from '../functions/formatDate'
 
 const Calculator = () => {
   const [formData, setFormData] = useState({
@@ -48,7 +49,6 @@ const Calculator = () => {
 
   const saveData = (e) => {
     e.preventDefault()
-    console.log(formData)
     if (!data) {
       const localData = [formData]
       try {
@@ -104,41 +104,33 @@ const Calculator = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    // console.log(name)
     setFormData({
       ...formData,
       [name]: value
     })
   }
 
-  const formatDate = (e) => {
-    console.log(e)
-    const newDate = !e ? new Date() : new Date(e)
-    const year = newDate.getFullYear()
-    let month = newDate.getMonth() + 1
-    month = month < 10 ? `0${month}` : month
-    let day = newDate.getDate()
-    day = day < 10 ? `0${day}` : day
-
-    const formattedDate = `${year}-${month}-${day}`
-    console.log(formattedDate)
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      date: formattedDate
-    }))
-  }
-
-  const autoCalculate = (total, card, cash) => {
-    if (card > 0 && total > 0) {
-      const newCash =
-        Number(total) - Number(card) <= 0 || card === ''
-          ? ''
-          : Number(total) - Number(card)
+  const autoCalculate = (total, card, cash, freeNowTx) => {
+    if ((card > 0 && total > 0 && freeNowTx > 0) || (card > 0 && total > 0)) {
+      const newCash = () => {
+        if (!freeNowTx) {
+          if (Number(total) - Number(card) <= 0) {
+            return ''
+          } else {
+            return Number(total) - Number(card)
+          }
+        } else {
+          if (Number(total) - Number(card) - Number(freeNowTx) <= 0) {
+            return ''
+          } else {
+            return Number(total) - Number(card) - Number(freeNowTx)
+          }
+        }
+      }
       setFormData((prevFormData) => ({
         ...prevFormData,
-        [cash]: newCash
+        [cash]: newCash()
       }))
-      console.log(newCash)
     } else {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -180,9 +172,16 @@ const Calculator = () => {
       }))
     }
   }
+  const updateDate = (e) => {
+    const formDate = formatDate(e)
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      date: formDate
+    }))
+  }
 
   useEffect(() => {
-    formatDate()
+    updateDate()
   }, [])
 
   useEffect(() => {
@@ -205,13 +204,13 @@ const Calculator = () => {
   }, [formData.freenowOutOfApp])
 
   useEffect(() => {
-    autoCalculate(formData.counter, formData.card, 'cash')
-  }, [formData.card])
+    autoCalculate(formData.counter, formData.card, 'cash', formData.freenowTaximeter)
+  }, [formData.card, formData.freenowTaximeter])
 
   return (
     <div id='calculator-container'>
       <div>
-        <input id='date-input' type='date' value={formData.date} onChange={e => formatDate(e.target.value)} />
+        <input id='date-input' type='date' value={formData.date} onChange={e => updateDate(e.target.value)} />
         <select name='currency' id='currencies' value={formData.currency} onChange={handleChange}>
           {currencies.map(c =>
             <option key={c} value={c}>{c}</option>
