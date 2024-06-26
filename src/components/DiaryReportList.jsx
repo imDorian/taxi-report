@@ -6,6 +6,7 @@ import { useStore } from '../Stores/useStore'
 const DiaryReportList = () => {
   // const [data, setData] = useState(JSON.parse(window.localStorage.getItem('localData')))
   const { data, isEdit } = useStore()
+  console.log(data)
   const openModalDelete = (e) => {
     console.log(e.target)
     useStore.setState({
@@ -44,10 +45,10 @@ const DiaryReportList = () => {
         {data && data.sort((b, a) => new Date(a.date) - new Date(b.date)).map(d => {
           const fuel = Number(d.gasoline ?? d.diesel ?? d.gas ?? d.electricity).toFixed(2)
           const returnFuel = d.returnFuel === 'full' ? fuel : d.returnFuel === '1.50' ? fuel * 0.5 : d.returnFuel === '0' ? fuel * 0 : (fuel - fuel / d.returnFuel).toFixed(2)
-          const total = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify) + Number(d.counter)).toFixed(2)
+          const total = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify) + Number(d.counter) - Number(d.errors)).toFixed(2)
           const totalApps = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify)).toFixed(2)
           const returnFuelPorcent = d.returnFuel === 'full' ? '100' : d.returnFuel === '0' ? 0 : d.returnFuel.slice(2)
-          const counter = Number(d.counter).toFixed(2)
+          const counter = (Number(d.counter) - Number(d.errors)).toFixed(2)
           return (
             <li key={d.id}>
               <div className='date-container'>

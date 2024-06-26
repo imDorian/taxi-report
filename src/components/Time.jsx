@@ -34,7 +34,7 @@ const Time = ({ data, week, month, today }) => {
   const apps = calculateSum('', [], ['uber', 'uberTips', 'uberPromotions', 'bolt', 'cabify', 'freenowOutOfApp', 'freenowOnApp'])
   const emisora = calculateSum('emisora')
   const fuel = calculateSum('', [], ['gasoline', 'diesel', 'gas', 'electricity'])
-  const billing = calculateSum('counter', ['errors', 'freenowTaximeter'], ['uber', 'uberTips', 'uberPromotions', 'freenowOutOfApp', 'freenowOnApp', 'bolt', 'cabify'])
+  const billing = calculateSum('counter', ['errors', 'freenowTaximeter'], ['uber', 'uberTips', 'uberPromotions', 'freenowOutOfApp', 'freenowOnApp'])
   const cash = calculateSum('', [], ['cash', 'uberCash', 'freenowCash', 'boltCash', 'cabifyCash'])
 
   const handleDate = (e) => {

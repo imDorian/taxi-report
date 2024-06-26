@@ -110,20 +110,20 @@ const Calculator = () => {
     })
   }
 
-  const autoCalculate = (total, card, cash, freeNowTx) => {
+  const autoCalculate = (total, card, cash, freeNowTx, errors) => {
     if ((card > 0 && total > 0 && freeNowTx > 0) || (card > 0 && total > 0)) {
       const newCash = () => {
         if (!freeNowTx) {
           if (Number(total) - Number(card) <= 0) {
             return ''
           } else {
-            return Number(total) - Number(card)
+            return (Number(total) - Number(errors)) - Number(card)
           }
         } else {
           if (Number(total) - Number(card) - Number(freeNowTx) <= 0) {
             return ''
           } else {
-            return Number(total) - Number(card) - Number(freeNowTx)
+            return (Number(total) - Number(freeNowTx) - Number(errors)) - Number(card)
           }
         }
       }
@@ -204,8 +204,8 @@ const Calculator = () => {
   }, [formData.freenowOutOfApp])
 
   useEffect(() => {
-    autoCalculate(formData.counter, formData.card, 'cash', formData.freenowTaximeter)
-  }, [formData.card, formData.freenowTaximeter])
+    autoCalculate(formData.counter, formData.card, 'cash', formData.freenowTaximeter, formData.errors)
+  }, [formData.card, formData.freenowTaximeter, formData.errors])
 
   return (
     <div id='calculator-container'>
