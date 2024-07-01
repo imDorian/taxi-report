@@ -39,7 +39,7 @@ const Details = () => {
       <span>Tarjeta: {detailData.freenowCard}</span>
       <span>Efectivo: {detailData.freenowCash}</span>
       <span>Taxímetro: {detailData.freenowTaximeter}</span>
-      <h1>total : {total}</h1>
+      <h1>total : {total.toFixed(2)}</h1>
       <Nav />
     </>
   )
