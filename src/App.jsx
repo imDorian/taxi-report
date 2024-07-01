@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import Report from './pages/Report'
 import Statistics from './pages/Statistics'
 import UberHistory from './components/UberHistory'
+import Details from './pages/Details'
 
 function App () {
   return (
@@ -14,6 +15,7 @@ function App () {
           <Route path='/diaryreport' element={<Report />} />
           <Route path='/statistics' element={<Statistics />} />
           <Route path='/uber' element={<UberHistory />} />
+          <Route path='/diaryreport/:id' element={<Details />} />
         </Routes>
       </Router>
     </>

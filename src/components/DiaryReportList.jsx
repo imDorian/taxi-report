@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom'
 import '../css/DiaryReportList.css'
 import { formatDate } from '../functions/formatDate'
 import { useStore } from '../Stores/useStore'
@@ -6,7 +7,7 @@ import { useStore } from '../Stores/useStore'
 const DiaryReportList = () => {
   // const [data, setData] = useState(JSON.parse(window.localStorage.getItem('localData')))
   const { data, isEdit } = useStore()
-  console.log(data)
+  const navigate = useNavigate()
   const openModalDelete = (e) => {
     console.log(e.target)
     useStore.setState({
@@ -32,6 +33,10 @@ const DiaryReportList = () => {
     console.log(newData)
     const formDate = formatDate(e.date)
   }
+
+  const openDetails = (path) => {
+    navigate(path)
+  }
   //   const deleteAllReport = () => {
   //     window.localStorage.clear('localData')
   //   }
@@ -45,10 +50,10 @@ const DiaryReportList = () => {
         {data && data.sort((b, a) => new Date(a.date) - new Date(b.date)).map(d => {
           const fuel = Number(d.gasoline ?? d.diesel ?? d.gas ?? d.electricity).toFixed(2)
           const returnFuel = d.returnFuel === 'full' ? fuel : d.returnFuel === '1.50' ? fuel * 0.5 : d.returnFuel === '0' ? fuel * 0 : (fuel - fuel / d.returnFuel).toFixed(2)
-          const total = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify) + Number(d.counter) - Number(d.errors)).toFixed(2)
+          const total = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify) + Number(d.counter) - Number(d.errors) - Number(d.freenowTaximeter)).toFixed(2)
           const totalApps = (Number(d.uber) + Number(d.uberPromotions) + Number(d.uberTips) + Number(d.bolt) + Number(d.freenowOutOfApp) + Number(d.freenowOnApp) + Number(d.cabify)).toFixed(2)
           const returnFuelPorcent = d.returnFuel === 'full' ? '100' : d.returnFuel === '0' ? 0 : d.returnFuel.slice(2)
-          const counter = (Number(d.counter) - Number(d.errors)).toFixed(2)
+          const counter = (Number(d.counter) - Number(d.errors) - Number(d.freenowTaximeter)).toFixed(2)
           return (
             <li key={d.id}>
               <div className='date-container'>
@@ -60,7 +65,7 @@ const DiaryReportList = () => {
                 }
                 <button onClick={() => openModalDelete(d)} className='delete-button'>X</button>
               </div>
-              <div className='total-diary--container'>
+              <div className='total-diary--container' onClick={() => openDetails(`/diaryreport/${d.id}`)}>
                 <div>Taxi <span>{counter}{d.currency}</span></div>
                 <div>Apps <span>{totalApps}{d.currency}</span></div>
                 {/* <div>Emisoras <span>{d.currency}</span></div> */}
