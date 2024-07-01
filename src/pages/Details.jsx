@@ -27,6 +27,8 @@ const Details = () => {
       <span>Counter: {detailData.counter}</span>
       <span>Card: {detailData.card}</span>
       <span>Cash: {detailData.cash}</span>
+      <span>errors: {detailData.errors}</span>
+      <span>nErrors: {detailData.nErrors}</span>
       <h3>uber</h3>
       <span>Total: {detailData.uber}</span>
       <span>Propina :{detailData.uberTips}</span>
